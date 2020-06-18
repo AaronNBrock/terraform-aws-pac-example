@@ -1,0 +1,115 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create the VPC flow logs for splunk.
+Parameters:
+  VpcId:
+    Type: String
+    Default: None
+  VpcId2:
+    Type: String
+    Default: None
+  VpcId3:
+    Type: String
+    Default: None
+  VpcId4:
+    Type: String
+    Default: None
+  VpcId5:
+    Type: String
+    Default: None
+  LogGroupName:
+    Type: String
+Conditions:
+  VPC2Present: !Not [!Equals [!Ref VpcId2, None]]
+  VPC3Present: !Not [!Equals [!Ref VpcId3, None]]
+  VPC4Present: !Not [!Equals [!Ref VpcId4, None]]
+  VPC5Present: !Not [!Equals [!Ref VpcId5, None]]
+Resources:
+  SplunkFlowLog:
+    Type: AWS::EC2::FlowLog
+    Properties:
+      LogDestinationType: cloud-watch-logs
+      LogGroupName: !Ref LogGroupName
+      ResourceId: !Ref VpcId
+      ResourceType: VPC
+      TrafficType: ALL
+      DeliverLogsPermissionArn: !GetAtt SplunkFlowLogRole.Arn
+  SplunkFlowLog2:
+    Type: AWS::EC2::FlowLog
+    Condition: VPC2Present
+    Properties:
+      LogDestinationType: cloud-watch-logs
+      LogGroupName: !Ref LogGroupName
+      ResourceId: !Ref VpcId2
+      ResourceType: VPC
+      TrafficType: ALL
+      DeliverLogsPermissionArn: !GetAtt SplunkFlowLogRole.Arn
+  SplunkFlowLog3:
+    Type: AWS::EC2::FlowLog
+    Condition: VPC3Present
+    Properties:
+      LogDestinationType: cloud-watch-logs
+      LogGroupName: !Ref LogGroupName
+      ResourceId: !Ref VpcId3
+      ResourceType: VPC
+      TrafficType: ALL
+      DeliverLogsPermissionArn: !GetAtt SplunkFlowLogRole.Arn
+  SplunkFlowLogRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Join [-, [trumpet-flowlog-delivery-role, !Ref "AWS::Region"]]
+      Path: /
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - vpc-flow-logs.amazonaws.com
+            Action:
+              - "sts:AssumeRole"
+  SplunkLogDeliveryPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: trumpet-flowlog-delivery-policy
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - "logs:CreateLogGroup"
+              - "logs:CreateLogStream"
+              - "logs:PutLogEvents"
+              - "logs:DescribeLogGroups"
+              - "logs:DescribeLogStreams"
+            Resource: "*"
+      Roles:
+        - !Ref SplunkFlowLogRole
+  SplunkFlowLog4:
+    Type: AWS::EC2::FlowLog
+    Condition: VPC5Present
+    Properties:
+      LogDestinationType: cloud-watch-logs
+      LogGroupName: !Ref LogGroupName
+      ResourceId: !Ref VpcId4
+      ResourceType: VPC
+      TrafficType: ALL
+      DeliverLogsPermissionArn: !GetAtt SplunkFlowLogRole.Arn
+  SplunkFlowLog5:
+    Type: AWS::EC2::FlowLog
+    Condition: VPC5Present
+    Properties:
+      LogDestinationType: cloud-watch-logs
+      LogGroupName: !Ref LogGroupName
+      ResourceId: !Ref VpcId5
+      ResourceType: VPC
+      TrafficType: ALL
+      DeliverLogsPermissionArn: !GetAtt SplunkFlowLogRole.Arn
+Outputs:
+  FlowLogId:
+    Description: ID of the VPC Flow Log in use.
+    Value: !Ref SplunkFlowLog
+  FlowLogRoleArn:
+    Description: ARN for the FlowLog delivery role.
+    Value: !GetAtt SplunkFlowLogRole.Arn
+    Export:
+      Name: !Sub "${AWS::StackName}-FLOWLOG-ARN"

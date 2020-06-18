@@ -1,0 +1,11 @@
+[aws_sqs_based_s3://$input_name]
+aws_account = $aws_account
+interval = $interval
+s3_file_decoder = $decoder
+sourcetype = $sourcetype
+sqs_batch_size = $batch_size
+sqs_queue_region = $aws_region
+sqs_queue_url = $queue_url
+index = $index
+
+

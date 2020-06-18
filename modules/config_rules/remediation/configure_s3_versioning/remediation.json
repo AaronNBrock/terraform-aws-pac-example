@@ -1,0 +1,71 @@
+{
+    "Parameters": {
+        "ConfigRuleName": {
+            "Type": "String",
+            "Description": "The Rule to apply remediation to."
+        },
+        "Automatic": {
+            "Type": "String",
+            "Default": "false",
+            "AllowedValues": [
+                "true",
+                "false"
+            ],
+            "Description": "Whether to automatically apply remediation"
+        },
+        "AutomationAssumeRole": {
+            "Type": "String",
+            "Description": "The arn of the role to assume."
+        },
+        "VersioningState": {
+            "Type": "String",
+            "Default": "Enabled",
+            "AllowedValues": [
+                "Enabled",
+                "Disabled"
+            ],
+            "Description": "The state to set versioning to."
+        }
+    },
+    "Resources": {
+        "S3VersioningRemediationConfiguration": {
+            "Type": "AWS::Config::RemediationConfiguration",
+            "Properties": {
+                "Automatic": true,
+                "MaximumAutomaticAttempts": 5,
+                "RetryAttemptSeconds": 60,
+                "ConfigRuleName": {
+                    "Ref": "ConfigRuleName"
+                },
+                "Parameters": {
+                    "AutomationAssumeRole": {
+                        "StaticValue": {
+                            "Values": [
+                                {
+                                    "Ref": "AutomationAssumeRole"
+                                }
+                            ]
+                        }
+                    },
+                    "BucketName": {
+                        "ResourceValue": {
+                            "Value": "RESOURCE_ID"
+                        }
+                    },
+                    "VersioningState": {
+                        "StaticValue": {
+                            "Values": [
+                                {
+                                    "Ref": "VersioningState"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "TargetId": "AWS-ConfigureS3BucketVersioning",
+                "TargetType": "SSM_DOCUMENT",
+                "TargetVersion": "1"
+            }
+        }
+    }
+}

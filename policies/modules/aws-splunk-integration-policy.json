@@ -1,0 +1,166 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "CloudFormationPolicyPermissions",
+            "Effect": "Allow",
+            "Action": [
+                "cloudformation:CreateStack",
+                "cloudformation:DescribeStackEvents",
+                "cloudformation:DescribeStacks",
+                "cloudformation:GetTemplate",
+                "cloudformation:ListStackResources",
+                "cloudformation:DeleteStack",
+                "cloudformation:DescribeStackEvents",
+                "cloudformation:DescribeStacks",
+                "cloudformation:GetTemplate",
+                "cloudformation:UpdateStack"
+            ],
+            "Resource": [
+                "arn:aws:cloudformation:*:*:stack/trumpet*/*",
+                "arn:aws:cloudformation:*:*:stack/flowlogs*/*"
+            ]
+        },
+        {
+            "Sid": "EC2PolicyPermissions",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:CreateFlowLogs",
+                "ec2:DeleteFlowLogs",
+                "ec2:DescribeVpcs"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "KinesisFirehosePolicyPermissions",
+            "Effect": "Allow",
+            "Action": [
+                "firehose:CreateDeliveryStream",
+                "firehose:DescribeDeliveryStream",
+                "firehose:DeleteDeliveryStream",
+                "firehose:DescribeDeliveryStream",
+                "firehose:UpdateDestination"
+            ],
+            "Resource": "arn:aws:firehose:*:*:deliverystream/trumpet*"
+        },
+        {
+            "Sid": "IAMPolicyPermissions",
+            "Effect": "Allow",
+            "Action": [
+                "iam:AttachRolePolicy",
+                "iam:CreateRole",
+                "iam:GetRole",
+                "iam:GetRolePolicy",
+                "iam:ListInstanceProfilesForRole",
+                "iam:PassRole",
+                "iam:DeleteRole",
+                "iam:DeleteRolePolicy",
+                "iam:DetachRolePolicy",
+                "iam:PutRolePolicy"
+            ],
+            "Resource": [
+                "arn:aws:iam::*:role/trumpet*",
+                "arn:aws:iam::*:role/aws-sentinel*"
+            ]
+        },
+        {
+            "Sid": "LambdaPolicyPermissions",
+            "Effect": "Allow",
+            "Action": [
+                "lambda:CreateFunction",
+                "lambda:GetFunctionConfiguration"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "LambdaPolicyDeletePermissions",
+            "Effect": "Allow",
+            "Action": [
+                "lambda:DeleteFunction"
+            ],
+            "Resource": [
+                "arn:aws:lambda:*:*:function:trumpet*"
+            ]
+        },
+        {
+            "Sid": "CloudWatchLogAllResourcePolicyPermissions",
+            "Effect": "Allow",
+            "Action": [
+                "logs:DescribeLogGroups",
+                "logs:ListTagsLogGroup",
+                "logs:CreateLogGroup",
+                "logs:DeleteSubscriptionFilter",
+                "logs:DeleteLogGroup",
+                "logs:PutRetentionPolicy",
+                "logs:PutSubscriptionFilter"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "S3PolicyPermissions",
+            "Effect": "Allow",
+            "Action": [
+                "s3:CreateBucket",
+                "s3:GetObject",
+                "s3:PutBucketVersioning",
+                "s3:DeleteBucket"
+            ],
+            "Resource": [
+                "arn:aws:s3:::trumpet*",
+                "arn:aws:s3:::cf-templates*",
+                "arn:aws:s3:::spgi-test-elb-access"
+            ]
+        },
+        {
+            "Sid": "S3NotificationPolicyPermissions",
+            "Effect": "Allow",
+            "Action": [
+                "s3:PutBucketNotification",
+                "s3:ListBucket",
+                "s3:GetBucket"
+            ],
+            "Resource": [
+                "arn:aws:s3:::*"
+            ]
+        },
+        {
+            "Sid": "EventBridgePolicyPermissions",
+            "Effect": "Allow",
+            "Action": [
+                "events:DescribeRule",
+                "events:PutRule",
+                "events:PutTargets"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "EventBridgePolicyDeletePermissions",
+            "Effect": "Allow",
+            "Action": [
+                "events:DeleteRule",
+                "events:RemoveTargets"
+            ],
+            "Resource": [
+                "arn:aws:events:*:*:rule/trumpet*"
+            ]
+        },
+        {
+            "Sid": "SQSPolicyPermissions",
+            "Effect": "Allow",
+            "Action": [
+                "sqs:*"
+            ],
+            "Resource": [
+                "arn:aws:sqs:*:*:access-*"
+            ]
+        },
+        {
+            "Sid": "STSAssumeRolePolicyPermission",
+            "Effect": "Allow",
+            "Action": [
+                "sts:AssumeRole"
+            ],
+            "Resource": "arn:aws:iam::*:role/spgi-aws-sentinel*"
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+---
+  - name: "add AWS input to splunk servers"
+    hosts: all
+    handlers:
+     - name: restart_service
+       command: printf '$splunk_username\n$splunk_password\n' | /opt/splunk/bin/splunk reload monitor
+
+    tasks:
+    - name: copy input config file and restart splunk service
+      copy:
+        src: /tmp/input.config
+        dest: /opt/splunk/etc/apps/Splunk_TA_aws/local/inputs.conf
+      notify:
+        - restart_service
+

@@ -1,0 +1,66 @@
+{
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": "config:*",
+            "Resource": [
+                "arn:aws:config:*:*:config-rule/config-rule-*",
+                "arn:aws:config:*:*:remediation-configuration/aws-sentinel-*",
+                "*"
+            ]
+        },
+        {
+            "Sid": "VisualEditor1",
+            "Effect": "Allow",
+            "Action": [
+                "config:DescribeConfigurationRecorders",
+                "iam:CreateServiceLinkedRole"
+            ],
+            "Resource": [
+                "*"
+            ]
+        },
+        {
+            "Sid": "VisualEditor2",
+            "Effect": "Allow",
+            "Action": "config:*",
+            "Resource": "arn:aws:config:*:*:config-rule/config-rule-*"
+        },
+        {
+            "Sid": "VisualEditor3",
+            "Effect": "Allow",
+            "Action": "ssm:*",
+            "Resource": "arn:aws:ssm:*:*:document/*"
+        },
+        {
+            "Sid": "VisualEditor4",
+            "Effect": "Allow",
+            "Action": "s3:*",
+            "Resource": "arn:aws:s3:::aws-sentinel-*"
+        },
+        {
+            "Sid": "VisualEditor5",
+            "Effect": "Allow",
+            "Action": "iam:*",
+            "Resource": [
+                "arn:aws:iam::*:role/aws-sentinel-*",
+                "arn:aws:iam::*:policy/aws-sentinel-*",
+                "arn:aws:iam::*:policy/service-role/AWSConfigRole"
+            ]
+        },
+        {
+            "Sid": "VisualEditor6",
+            "Effect": "Allow",
+            "Action": "cloudformation:*",
+            "Resource": "arn:aws:cloudformation:*:*:stack/aws-sentinel-*/*"
+        },
+        {
+            "Sid": "VisualEditor7",
+            "Effect": "Allow",
+            "Action": "dynamodb:*",
+            "Resource": "arn:aws:dynamodb:*:*:table/aws-sentinel-*"
+        }
+    ],
+    "Version": "2012-10-17"
+}
